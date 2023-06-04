@@ -8,6 +8,6 @@ const {
 const router = express.Router()
 
 router.post('/signin', validateSigninRequest, isRequestValidated, signin)
-router.post('/signup', validateSignupRequest, isRequestValidated, signup)
+router.get('/signup', signup)
 
 module.exports = router

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { Client, Users } = require('node-appwrite')
+const { Client, Users, ID } = require('node-appwrite')
 
 const client = new Client()
   .setEndpoint(`${process.env.APPWRITE_ENDPOINT}`) // Your API Endpoint
@@ -8,21 +8,13 @@ const client = new Client()
 
 const users = new Users(client)
 
-exports.signup = (req, res) => {
-  const user = account.create(
+exports.signup = async (req, res) => {
+  const user = await users.createBcryptUser(
     ID.unique(),
     `${req.body.email}`,
     `${req.body.password}`
   )
-
-  user.then(
-    function (response) {
-      res.status(200).send(response)
-    },
-    function (error) {
-      res.status(400).send(error)
-    }
-  )
+  res.status(200).send(user)
 }
 
 exports.signin = async (req, res) => {
