@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const { Client, Users, ID } = require('node-appwrite')
+const bcrypt = require('bcrypt')
 
 const client = new Client()
   .setEndpoint(`${process.env.APPWRITE_ENDPOINT}`) // Your API Endpoint
@@ -9,10 +10,11 @@ const client = new Client()
 const users = new Users(client)
 
 exports.signup = async (req, res) => {
+  const hashedPassword = await bcrypt.hash(`${req.body.password}`, 10)
   const user = await users.createBcryptUser(
     ID.unique(),
     `${req.body.email}`,
-    `${req.body.password}`
+    `${hashedPassword}`
   )
   res.status(200).send(user)
 }
@@ -20,21 +22,32 @@ exports.signup = async (req, res) => {
 exports.signin = async (req, res) => {
   const userList = await users.list()
   const usersDetails = userList.users
-  let error = true
+  let userExist = false
 
   for (let i = 0; i < usersDetails.length; i++) {
     if (usersDetails[i].email == req.body.email) {
-      const token = jwt.sign(
-        { email: usersDetails[i].email, password: usersDetails[i].password },
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: '2h' }
+      userExist = true
+
+      const authenticated = await bcrypt.compare(
+        req.body.password,
+        usersDetails[i].password
       )
-      error = false
-      res.status(200).send({ token: token, user: usersDetails[i] })
+
+      if (authenticated) {
+        const token = jwt.sign(
+          { email: usersDetails[i].email, password: usersDetails[i].password },
+          process.env.JWT_SECRET_KEY,
+          { expiresIn: '2h' }
+        )
+
+        res.status(200).send({ token: token, user: usersDetails[i] })
+      } else {
+        res.status(400).send('Password is incorrect')
+      }
     }
   }
 
-  if (error) {
-    res.status(400).send('Error !!')
+  if (!userExist) {
+    res.status(400).send('User Not Found')
   }
 }
