@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { Client, Users, ID } = require('node-appwrite')
+const { Client, Users, ID, Databases } = require('node-appwrite')
 const bcrypt = require('bcrypt')
 
 const client = new Client()
@@ -8,6 +8,7 @@ const client = new Client()
   .setKey(`${process.env.APPWRITE_API_KEY}`)
 
 const users = new Users(client)
+const databases = new Databases(client)
 
 exports.signup = async (req, res) => {
   const hashedPassword = await bcrypt.hash(`${req.body.password}`, 10)

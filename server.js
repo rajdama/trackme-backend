@@ -22,8 +22,10 @@ const port = process.env.PORT || 3000
 //   })
 
 const userRoutes = require('./routes/user')
+const mealPlanRoutes = require('./routes/mealPlan')
 
 app.use('/', userRoutes)
+app.use('/', mealPlanRoutes)
 
 app.listen(port, () => {
   console.log(` Server is running on port ${port} `)
