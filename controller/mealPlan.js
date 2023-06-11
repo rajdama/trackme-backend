@@ -11,8 +11,9 @@ const databases = new Databases(client)
 const fetchDocumentById = async (userId) => {
   const allDocuments = await databases.listDocuments(
     '648040b07ab2b69101c8',
-    '648040b07ab2b69101c99'
+    '648056e2d39318d33b60'
   )
+  // console.log(allDocuments)
   const userDocument = await allDocuments.documents.filter(
     (document) => document.userId == userId
   )
@@ -39,16 +40,18 @@ exports.mealPLanExists = async (req, res) => {
 }
 
 exports.updateMealPlan = async (req, res) => {
+  console.log('inside update')
   const userDocument = await fetchDocumentById(req.body.userId)
   let userMealPlan = JSON.parse(userDocument[0].mealPlan)
   userMealPlan[req.body.period].push(req.body.food)
   userMealPlan = JSON.stringify(userMealPlan)
   const document = await databases.updateDocument(
     '648040b07ab2b69101c8',
-    '648040b07ab2b69101c99',
+    '648056e2d39318d33b60',
     `${userDocument[0].$id}`,
     { mealPlan: userMealPlan }
   )
+  res.status(200).send(document)
 }
 
 exports.createMealPlan = async (req, res) => {
@@ -59,20 +62,21 @@ exports.createMealPlan = async (req, res) => {
 
   const stringifiedMealPlan = JSON.stringify(mealPlan)
 
-  const document = databases.createDocument(
+  const document = await databases.createDocument(
     '648040b07ab2b69101c8',
-    '648040b07ab2b69101c99',
+    '648056e2d39318d33b60',
     ID.unique(),
     {
       userId: `${req.body.userId}`,
       mealPlan: stringifiedMealPlan,
     }
   )
+  // console.log(document)
 }
 
 exports.getMealPlan = async (req, res) => {
+  // console.log(req.body.userId)
   let userDocument = await fetchDocumentById(req.body.userId)
-  console.log(userDocument)
   if (userDocument.length != 0) {
     const mealPlan = JSON.parse(userDocument[0].mealPlan)
     res.status(200).send(mealPlan)
