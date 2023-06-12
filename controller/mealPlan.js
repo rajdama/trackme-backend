@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken')
 const { Client, Users, ID, Databases } = require('node-appwrite')
 
 const client = new Client()
@@ -19,6 +18,7 @@ const fetchDocumentById = async (userId) => {
   )
   return userDocument
 }
+
 exports.mealPLanExists = async (req, res) => {
   const userDocument = await fetchDocumentById(req.body.userId)
   let mealPlanExist = false

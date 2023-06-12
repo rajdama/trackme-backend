@@ -24,7 +24,6 @@ exports.signin = async (req, res) => {
   const userList = await users.list()
   const usersDetails = userList.users
   let userExist = false
-
   for (let i = 0; i < usersDetails.length; i++) {
     if (usersDetails[i].email == req.body.email) {
       userExist = true
