@@ -7,7 +7,7 @@ const {
 } = require('../validator/validator.js')
 const router = express.Router()
 
-router.post('/signin', validateSigninRequest, isRequestValidated, signin)
-router.post('/signup', validateSignupRequest, isRequestValidated, signup)
+router.post('/signin', validateSigninRequest, signin)
+router.post('/signup', validateSignupRequest, signup)
 
 module.exports = router

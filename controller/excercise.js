@@ -7,20 +7,23 @@ const client = new Client()
 
 const databases = new Databases(client)
 
-const fetchDocumentById = async (userId) => {
+const fetchDocumentByIdAndDate = async (userId, date) => {
   const allDocuments = await databases.listDocuments(
-    '648040b07ab2b69101c8',
-    '6485a1d987f8cacdbd5e'
+    '648889c9d70e67f298c6',
+    '64888a47f167444cc8f4'
   )
-  // console.log(allDocuments)
+
   const userDocument = await allDocuments.documents.filter(
-    (document) => document.userId == userId
+    (document) => document.userId == userId && document.date == date
   )
   return userDocument
 }
 
 exports.excercisePlanExist = async (req, res) => {
-  const userDocument = await fetchDocumentById(req.body.userId)
+  const userDocument = await fetchDocumentByIdAndDate(
+    req.body.userId,
+    req.body.date
+  )
 
   if (userDocument?.length != 0) {
     res.status(200).send(true)
@@ -30,33 +33,36 @@ exports.excercisePlanExist = async (req, res) => {
 }
 
 exports.createExcercisePlan = async (req, res) => {
-  console.log('inside create')
   const excercisePlan = [req.body.excercise]
 
   const stringifidExcercisePlan = JSON.stringify(excercisePlan)
 
   const document = await databases.createDocument(
-    '648040b07ab2b69101c8',
-    '6485a1d987f8cacdbd5e',
+    '648889c9d70e67f298c6',
+    '64888a47f167444cc8f4',
     ID.unique(),
     {
       userId: `${req.body.userId}`,
       excercisePlan: stringifidExcercisePlan,
+      date: req.body.date,
     }
   )
-  console.log(excercisePlan)
+
   res.status(200).send(excercisePlan)
 }
 
 exports.updateExcercisePlan = async (req, res) => {
-  const excercisePlan = await fetchDocumentById(req.body.userId)
+  const excercisePlan = await fetchDocumentByIdAndDate(
+    req.body.userId,
+    req.body.date
+  )
   const stringifiedExcercisePlan = excercisePlan[0].excercisePlan
   const parsedExcercisePlan = JSON.parse(stringifiedExcercisePlan)
   parsedExcercisePlan.push(req.body.excercise)
 
   const document = await databases.updateDocument(
-    '648040b07ab2b69101c8',
-    '6485a1d987f8cacdbd5e',
+    '648889c9d70e67f298c6',
+    '64888a47f167444cc8f4',
     `${excercisePlan[0].$id}`,
     {
       userId: `${req.body.userId}`,
@@ -68,7 +74,10 @@ exports.updateExcercisePlan = async (req, res) => {
 }
 
 exports.getExcercisePlan = async (req, res) => {
-  let userExcercisePlan = await fetchDocumentById(req.body.userId)
+  let userExcercisePlan = await fetchDocumentByIdAndDate(
+    req.body.userId,
+    req.body.date
+  )
 
   if (userExcercisePlan.length != 0) {
     const parsedExcercisePlan = JSON.parse(userExcercisePlan[0].excercisePlan)

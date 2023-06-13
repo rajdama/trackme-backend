@@ -12,6 +12,6 @@ const router = express.Router()
 router.post('/createMealPlan', createMealPlan)
 router.post('/updateMealPlan', updateMealPlan)
 router.post('/mealPlanExists', mealPLanExists)
-router.post('/getMealPlan', getMealPlan)
+router.post('/getMealPlan', requireSignin, getMealPlan)
 
 module.exports = router
