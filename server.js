@@ -6,7 +6,7 @@ const cors = require('cors')
 env.config()
 app.use(
   cors({
-    origin: 'https://track-me-frontend.web.app',
+    origin: 'https://track-fitness-app.web.app',
   })
 )
 app.use(express.json())
