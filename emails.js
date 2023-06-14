@@ -2,6 +2,11 @@ const { Users } = require('node-appwrite')
 const nodemailer = require('nodemailer')
 const schedule = require('node-schedule')
 
+const client = new Client()
+  .setEndpoint(`${process.env.APPWRITE_ENDPOINT}`) // Your API Endpoint
+  .setProject(`${process.env.APPWRITE_PROJECT_ID}`) // Your project ID
+  .setKey(`${process.env.APPWRITE_API_KEY}`)
+
 const users = new Users(client)
 
 exports.sendEmails = async () => {
