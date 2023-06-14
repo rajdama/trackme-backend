@@ -17,7 +17,15 @@ const mealPlanRoutes = require('./routes/mealPlan')
 const excercisePlanRoutes = require('./routes/excercise')
 const homePlanRoutes = require('./routes/home')
 const chatBot = require('./routes/chatBot')
+const { sendEmails } = require('./emails')
 
+sendEmails()
+  .then(() => {
+    console.log('success')
+  })
+  .catch(() => {
+    console.log('fail')
+  })
 app.use('/', userRoutes)
 app.use('/', mealPlanRoutes)
 app.use('/', excercisePlanRoutes)
