@@ -1,4 +1,4 @@
-const { Users } = require('node-appwrite')
+const { Users, Client } = require('node-appwrite')
 const nodemailer = require('nodemailer')
 const schedule = require('node-schedule')
 
