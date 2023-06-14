@@ -74,7 +74,7 @@ exports.createMealPlan = async (req, res) => {
     {
       userId: `${req.body.userId}`,
       mealPlan: stringifiedMealPlan,
-      date: `8-5-2023`,
+      date: `${req.body.date}`,
     }
   )
 }

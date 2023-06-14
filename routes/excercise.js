@@ -8,9 +8,9 @@ const {
 const { requireSignin } = require('../middleware/middleware')
 const router = express.Router()
 
-router.post('/createExcercisePlan', createExcercisePlan)
+router.post('/createExcercisePlan', requireSignin, createExcercisePlan)
 router.post('/getExcercisePlan', requireSignin, getExcercisePlan)
-router.post('/excercisePlanExist', excercisePlanExist)
-router.post('/updateExcercisePlan', updateExcercisePlan)
+router.post('/excercisePlanExist', requireSignin, excercisePlanExist)
+router.post('/updateExcercisePlan', requireSignin, updateExcercisePlan)
 
 module.exports = router
