@@ -6,7 +6,8 @@ const cors = require('cors')
 env.config()
 app.use(
   cors({
-    origin: 'https://track-fitness-app.web.app',
+    origin:
+      'https://648aac2c536e9f488f22a958--storied-granita-a050bf.netlify.app',
   })
 )
 app.use(express.json())

@@ -15,7 +15,8 @@ exports.signup = async (req, res) => {
   const user = await users.createBcryptUser(
     ID.unique(),
     `${req.body.email}`,
-    `${hashedPassword}`
+    `${hashedPassword}`,
+    `${req.body.firstName}`
   )
   res.status(200).send(user)
 }
