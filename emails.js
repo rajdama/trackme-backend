@@ -21,7 +21,7 @@ exports.sendEmails = async () => {
   const userList = await users.list()
   const usersDetails = userList.users
 
-  schedule.scheduleJob({ hour: 21, minute: 10 }, function () {
+  schedule.scheduleJob({ hour: 9 }, function () {
     usersDetails.forEach((item) => {
       let mailBreakfastDetails = {
         from: 'rajdama1729@gmail.com',
@@ -39,7 +39,7 @@ exports.sendEmails = async () => {
     })
   })
 
-  schedule.scheduleJob({ hour: 21, minute: 12 }, function () {
+  schedule.scheduleJob({ hour: 12 }, function () {
     usersDetails.forEach((item) => {
       let mailBreakfastDetails = {
         from: 'rajdama1729@gmail.com',
@@ -57,3 +57,21 @@ exports.sendEmails = async () => {
     })
   })
 }
+
+schedule.scheduleJob({ hour: 17 }, function () {
+  usersDetails.forEach((item) => {
+    let mailBreakfastDetails = {
+      from: 'rajdama1729@gmail.com',
+      to: `${item.email}`,
+      subject: 'Time For BreakFast',
+      text: 'Hey Pal! I its time you have your breakfast if you have not done yet, if you have already had comeon track it and continue your progress',
+    }
+    mailTransporter.sendMail(mailBreakfastDetails, function (err, data) {
+      if (err) {
+        console.log('Error Occurs')
+      } else {
+        console.log('Email sent successfully')
+      }
+    })
+  })
+})
