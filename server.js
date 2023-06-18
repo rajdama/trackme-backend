@@ -6,7 +6,7 @@ const cors = require('cors')
 env.config()
 app.use(
   cors({
-    origin: 'https://track-me-frontend.netlify.app',
+    origin: 'https://track-me-frontend.onrender.com',
   })
 )
 app.use(express.json())

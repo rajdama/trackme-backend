@@ -1,4 +1,4 @@
-const { Client, Users, ID, Databases } = require('node-appwrite')
+const { Client, Databases } = require('node-appwrite')
 const client = new Client()
   .setEndpoint(`${process.env.APPWRITE_ENDPOINT}`) // Your API Endpoint
   .setProject(`${process.env.APPWRITE_PROJECT_ID}`) // Your project ID
@@ -40,29 +40,4 @@ exports.getCurrentMonthPlan = async (req, res) => {
   console.log({ currentMontheExcercisePlans })
 
   res.status(200).send({ currentMonthMealPlans, currentMontheExcercisePlans })
-}
-
-exports.addUserGoal = async (req, res) => {
-  const document = await databases.createDocument(
-    '648889c9d70e67f298c6',
-    '648956f73d725480c81b',
-    ID.unique(),
-    {
-      userId: `${req.body.userId}`,
-      goal: req.body.goal,
-    }
-  )
-  res.status(200).send(document)
-}
-
-exports.getUserGoal = async (req, res) => {
-  const allDocuments = await databases.listDocuments(
-    '648889c9d70e67f298c6',
-    '648956f73d725480c81b'
-  )
-  const userDocument = allDocuments.documents.filter(
-    (document) => document.userId == req.body.userId
-  )
-
-  res.status(200).send(userDocument[0])
 }

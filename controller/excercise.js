@@ -1,4 +1,4 @@
-const { Client, Users, ID, Databases } = require('node-appwrite')
+const { Client, ID, Databases } = require('node-appwrite')
 
 const client = new Client()
   .setEndpoint(`${process.env.APPWRITE_ENDPOINT}`) // Your API Endpoint

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { Client, Users, ID, Databases } = require('node-appwrite')
+const { Client, Users, ID } = require('node-appwrite')
 const bcrypt = require('bcrypt')
 
 const client = new Client()
@@ -8,7 +8,6 @@ const client = new Client()
   .setKey(`${process.env.APPWRITE_API_KEY}`)
 
 const users = new Users(client)
-const databases = new Databases(client)
 
 exports.signup = async (req, res) => {
   const hashedPassword = await bcrypt.hash(`${req.body.password}`, 10)
@@ -51,4 +50,13 @@ exports.signin = async (req, res) => {
   if (!userExist) {
     res.status(400).send('User Not Found')
   }
+}
+
+exports.getUpdatedUser = async (req, res) => {
+  await users.updatePrefs(`${req.body.userId}`, {
+    goal: `${req.body.goal}`,
+  })
+  const user = await users.get(`${req.body.userId}`)
+  console.log(user)
+  res.status(200).send(user)
 }
