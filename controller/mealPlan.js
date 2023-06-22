@@ -25,19 +25,9 @@ exports.mealPLanExists = async (req, res) => {
     req.body.userId,
     req.body.date
   )
-  let mealPlanExist = false
+
   if (userDocument?.length != 0) {
-    let userMealPlan = JSON.parse(userDocument[0].mealPlan)
-    userMealPlan?.map((mealPlan) => {
-      if (mealPlan?.length != 0) {
-        mealPlanExist = true
-      }
-    })
-    if (mealPlanExist) {
-      res.status(200).send(true)
-    } else {
-      res.status(200).send(false)
-    }
+    res.status(200).send(true)
   } else {
     res.status(200).send(false)
   }
@@ -91,4 +81,30 @@ exports.getMealPlan = async (req, res) => {
   } else {
     res.status(200).send([])
   }
+}
+
+exports.deleteMeal = async (req, res) => {
+  let userDocument = await fetchDocumentByIdAndDate(
+    req.body.userId,
+    req.body.date
+  )
+
+  let mealPlan = JSON.parse(userDocument[0].mealPlan)
+
+  let updatedMealPlan = mealPlan.map((meals, periodIndex) => {
+    if (req.body.periodIndex == periodIndex) {
+      meals = meals.filter((meal, j) => j != req.body.mealIndex)
+    }
+    return meals
+  })
+
+  stringifiedUpdatedMealPlan = JSON.stringify(updatedMealPlan)
+  const document = await databases.updateDocument(
+    '648889c9d70e67f298c6',
+    '648889d9a5d7e0ba9e8a',
+    `${userDocument[0].$id}`,
+    { mealPlan: stringifiedUpdatedMealPlan }
+  )
+
+  res.status(200).send(updatedMealPlan)
 }
