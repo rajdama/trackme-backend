@@ -37,7 +37,5 @@ exports.getCurrentMonthPlan = async (req, res) => {
       : false
   )
 
-  console.log({ currentMontheExcercisePlans })
-
   res.status(200).send({ currentMonthMealPlans, currentMontheExcercisePlans })
 }
