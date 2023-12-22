@@ -6,11 +6,12 @@ const cors = require('cors')
 env.config()
 app.use(
   cors({
-    origin: 'https://track-me-frontend.onrender.com',
+    origin: '*',
   })
 )
+// https://track-me-frontend.onrender.com
 app.use(express.json())
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 4000
 
 const userRoutes = require('./routes/user')
 const mealPlanRoutes = require('./routes/mealPlan')
