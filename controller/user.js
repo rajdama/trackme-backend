@@ -22,6 +22,7 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
   const userList = await users.list()
+  console.log(userList)
   const usersDetails = userList.users
   let userExist = false
   for (let i = 0; i < usersDetails.length; i++) {
